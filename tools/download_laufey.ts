@@ -134,12 +134,10 @@ export function buildDownloadPlan(
 }
 
 async function sha256Hex(data: Uint8Array): Promise<string> {
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength),
-  );
-  return Array.from(new Uint8Array(digest), (byte) =>
-    byte.toString(16).padStart(2, "0")
+  const digest = await crypto.subtle.digest("SHA-256", Uint8Array.from(data));
+  return Array.from(
+    new Uint8Array(digest),
+    (byte) => byte.toString(16).padStart(2, "0"),
   ).join("");
 }
 
@@ -179,8 +177,7 @@ async function expandZipWithPowerShell(
 ): Promise<void> {
   const quotedArchivePath = archivePath.replaceAll("'", "''");
   const quotedDestination = destination.replaceAll("'", "''");
-  const command =
-    `Expand-Archive -LiteralPath '${quotedArchivePath}' ` +
+  const command = `Expand-Archive -LiteralPath '${quotedArchivePath}' ` +
     `-DestinationPath '${quotedDestination}' -Force`;
   for (const shell of ["pwsh", "powershell"]) {
     try {

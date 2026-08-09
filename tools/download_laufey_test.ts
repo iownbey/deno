@@ -12,7 +12,9 @@ import {
 function assertEquals<T>(actual: T, expected: T, message?: string) {
   if (actual !== expected) {
     throw new Error(
-      `${message ?? "values are not equal"}\nexpected: ${expected}\nactual:   ${actual}`,
+      `${
+        message ?? "values are not equal"
+      }\nexpected: ${expected}\nactual:   ${actual}`,
     );
   }
 }
@@ -38,7 +40,10 @@ Deno.test("parsePinnedVersion reads lockfile directive", () => {
 
 Deno.test("parsePinnedVersion rejects missing directive", () => {
   assertThrows(
-    () => parsePinnedVersion("95b7dad3  laufey-cef-x86_64-unknown-linux-gnu.tar.gz"),
+    () =>
+      parsePinnedVersion(
+        "95b7dad3  laufey-cef-x86_64-unknown-linux-gnu.tar.gz",
+      ),
     "missing a '# version: vX.Y.Z' directive",
   );
 });
