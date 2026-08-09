@@ -20,6 +20,26 @@
           "commandName": "./hello/hello",
           "args": [],
           "output": "desktop.out"
+        },
+        {
+          // laufey v0.6.1 ships no cef build for aarch64-pc-windows-msvc,
+          // so Windows exercises the webview backend instead.
+          "if": "windows",
+          "args": [
+            "desktop",
+            "--backend=webview",
+            "--backend-args=--user-agent=\"potato\"",
+            "--output",
+            "./hello",
+            "./main.ts"
+          ],
+          "output": "[WILDCARD]"
+        },
+        {
+          "if": "windows",
+          "commandName": "./hello/hello.exe",
+          "args": [],
+          "output": "desktop_windows.out"
         }
       ]
     },
@@ -59,6 +79,24 @@
           "commandName": "./hello_spaces/hello_spaces",
           "args": [],
           "output": "desktop_spaces.out"
+        },
+        {
+          "if": "windows",
+          "args": [
+            "desktop",
+            "--backend=webview",
+            "--backend-args=--user-agent=\"potato browser\" --enable-logging",
+            "--output",
+            "./hello_spaces",
+            "./main.ts"
+          ],
+          "output": "[WILDCARD]"
+        },
+        {
+          "if": "windows",
+          "commandName": "./hello_spaces/hello_spaces.exe",
+          "args": [],
+          "output": "desktop_spaces_windows.out"
         }
       ]
     },
@@ -81,6 +119,24 @@
           "commandName": "./hello_escaped/hello_escaped",
           "args": [],
           "output": "desktop_escaped.out"
+        },
+        {
+          "if": "windows",
+          "args": [
+            "desktop",
+            "--backend=webview",
+            "--backend-args=--user-agent=\"a \\\"quoted\\\" agent\"",
+            "--output",
+            "./hello_escaped",
+            "./main.ts"
+          ],
+          "output": "[WILDCARD]"
+        },
+        {
+          "if": "windows",
+          "commandName": "./hello_escaped/hello_escaped.exe",
+          "args": [],
+          "output": "desktop_escaped_windows.out"
         }
       ]
     },
@@ -112,6 +168,21 @@
           ],
           "output": "[WILDCARD]invalid --backend-args quoting[WILDCARD]",
           "exitCode": 1
+        },
+        {
+          // Quoting is parsed before the backend downloads, so the failure
+          // must reproduce on the webview backend Windows uses.
+          "if": "windows",
+          "args": [
+            "desktop",
+            "--backend=webview",
+            "--backend-args=--user-agent=\"unterminated",
+            "--output",
+            "./hello_malformed",
+            "./main.ts"
+          ],
+          "output": "[WILDCARD]invalid --backend-args quoting[WILDCARD]",
+          "exitCode": 1
         }
       ]
     },
@@ -134,6 +205,24 @@
           "commandName": "./hello2/hello2",
           "args": [],
           "output": "desktop_config.out"
+        },
+        {
+          "if": "windows",
+          "args": [
+            "desktop",
+            "--output",
+            "./hello2",
+            "--config",
+            "./desktop_config_windows.jsonc",
+            "./main.ts"
+          ],
+          "output": "[WILDCARD]"
+        },
+        {
+          "if": "windows",
+          "commandName": "./hello2/hello2.exe",
+          "args": [],
+          "output": "desktop_config_windows.out"
         }
       ]
     },
