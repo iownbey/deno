@@ -165,7 +165,7 @@
             "./desktop_config.jsonc",
             "./main.ts"
           ],
-          "output": "desktop_mac.out"
+          "output": "desktop_mac_config.out"
         }
       ]
     }
