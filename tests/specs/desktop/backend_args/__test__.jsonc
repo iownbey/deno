@@ -163,11 +163,12 @@
           "exitCode": 1
         },
         {
-          // Quoting is parsed before the backend downloads, so the failure
-          // must reproduce on the webview backend Windows uses.
+          // Mirror the mac variant: --hmr makes the malformed quoting fail
+          // fast at dev-server startup, before any backend download/launch.
           "if": "windows",
           "args": [
             "desktop",
+            "--hmr",
             "--backend=webview",
             "--backend-args=--user-agent=\"unterminated",
             "--output",
