@@ -5178,7 +5178,7 @@ jobs:
         env:
           CI_SHARD_INDEX: '${{ github.event_name == ''pull_request'' && matrix.shard_index || '''' }}'
           CI_SHARD_TOTAL: '${{ github.event_name == ''pull_request'' && matrix.shard_total || '''' }}'
-        run: 'cargo test -p ${{ matrix.test_package }} --test ${{ matrix.test_crate }} --release'
+        run: 'xvfb-run -a cargo test -p ${{ matrix.test_package }} --test ${{ matrix.test_crate }} --release'
       - name: Ensure no git changes
         if: '!startsWith(github.ref, ''refs/tags/'') && github.event_name == ''pull_request'''
         run: |-
@@ -5878,7 +5878,7 @@ jobs:
           CARGO_PROFILE_DEV_DEBUG: 0
           CI_SHARD_INDEX: '${{ github.event_name == ''pull_request'' && matrix.shard_index || '''' }}'
           CI_SHARD_TOTAL: '${{ github.event_name == ''pull_request'' && matrix.shard_total || '''' }}'
-        run: 'cargo test -p ${{ matrix.test_package }} --test ${{ matrix.test_crate }}'
+        run: 'xvfb-run -a cargo test -p ${{ matrix.test_package }} --test ${{ matrix.test_crate }}'
       - name: Ensure no git changes
         if: '!startsWith(github.ref, ''refs/tags/'') && github.event_name == ''pull_request'''
         run: |-
@@ -6393,7 +6393,7 @@ jobs:
           CARGO_PROFILE_DEV_DEBUG: 0
           CI_SHARD_INDEX: '${{ github.event_name == ''pull_request'' && matrix.shard_index || '''' }}'
           CI_SHARD_TOTAL: '${{ github.event_name == ''pull_request'' && matrix.shard_total || '''' }}'
-        run: 'cargo test -p ${{ matrix.test_package }} --test ${{ matrix.test_crate }}'
+        run: 'xvfb-run -a cargo test -p ${{ matrix.test_package }} --test ${{ matrix.test_crate }}'
       - name: Ensure no git changes
         if: '!startsWith(github.ref, ''refs/tags/'') && github.event_name == ''pull_request'''
         run: |-
@@ -7334,7 +7334,7 @@ jobs:
         env:
           CI_SHARD_INDEX: '${{ github.event_name == ''pull_request'' && matrix.shard_index || '''' }}'
           CI_SHARD_TOTAL: '${{ github.event_name == ''pull_request'' && matrix.shard_total || '''' }}'
-        run: 'cargo test -p ${{ matrix.test_package }} --test ${{ matrix.test_crate }} --release'
+        run: 'xvfb-run -a cargo test -p ${{ matrix.test_package }} --test ${{ matrix.test_crate }} --release'
       - name: Ensure no git changes
         if: '!startsWith(github.ref, ''refs/tags/'') && !(!contains(github.event.pull_request.labels.*.name, ''ci-full'') && github.event_name == ''pull_request'') && github.event_name == ''pull_request'''
         run: |-
