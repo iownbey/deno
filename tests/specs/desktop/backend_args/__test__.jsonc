@@ -1,5 +1,11 @@
 {
   "tempDir": true,
+  // Kill any step that doesn't finish in 60s instead of hanging until CI
+  // cancels the job. The steps that launch a packaged app only exit when the
+  // GUI backend makes its HTTP request; if the backend can't start (e.g. no
+  // usable display/sandbox on a CI runner) the process would otherwise run
+  // forever.
+  "timeout": 60,
   "tests": {
     "forwards_backend_flags_to_launcher": {
       "steps": [
