@@ -4,7 +4,7 @@
     "forwards_backend_flags_to_launcher": {
       "steps": [
         {
-          "if": "unix",
+          "if": "linux",
           "args": [
             "desktop",
             "--backend=cef",
@@ -16,7 +16,7 @@
           "output": "[WILDCARD]"
         },
         {
-          "if": "unix",
+          "if": "linux",
           "commandName": "./hello/hello",
           "args": [],
           "output": "desktop.out"
@@ -43,7 +43,7 @@
     "forwards_backend_flags_with_quoted_spaces": {
       "steps": [
         {
-          "if": "unix",
+          "if": "linux",
           "args": [
             "desktop",
             "--backend=cef",
@@ -55,7 +55,7 @@
           "output": "[WILDCARD]"
         },
         {
-          "if": "unix",
+          "if": "linux",
           "commandName": "./hello_spaces/hello_spaces",
           "args": [],
           "output": "desktop_spaces.out"
@@ -65,7 +65,7 @@
     "forwards_backend_flags_with_escaped_quotes": {
       "steps": [
         {
-          "if": "unix",
+          "if": "linux",
           "args": [
             "desktop",
             "--backend=cef",
@@ -77,7 +77,7 @@
           "output": "[WILDCARD]"
         },
         {
-          "if": "unix",
+          "if": "linux",
           "commandName": "./hello_escaped/hello_escaped",
           "args": [],
           "output": "desktop_escaped.out"
@@ -87,9 +87,23 @@
     "malformed_backend_args_reports_error": {
       "steps": [
         {
-          "if": "unix",
+          "if": "linux",
           "args": [
             "desktop",
+            "--backend=cef",
+            "--backend-args=--user-agent=\"unterminated",
+            "--output",
+            "./hello_malformed",
+            "./main.ts"
+          ],
+          "output": "[WILDCARD]invalid --backend-args quoting[WILDCARD]",
+          "exitCode": 1
+        },
+        {
+          "if": "mac",
+          "args": [
+            "desktop",
+            "--hmr",
             "--backend=cef",
             "--backend-args=--user-agent=\"unterminated",
             "--output",
@@ -104,7 +118,7 @@
     "forwards_backend_flags_to_launcher_config": {
       "steps": [
         {
-          "if": "unix",
+          "if": "linux",
           "args": [
             "desktop",
             "--output",
@@ -116,10 +130,42 @@
           "output": "[WILDCARD]"
         },
         {
-          "if": "unix",
+          "if": "linux",
           "commandName": "./hello2/hello2",
           "args": [],
           "output": "desktop_config.out"
+        }
+      ]
+    },
+    "packages_macos_app_bundle": {
+      "steps": [
+        {
+          "if": "mac",
+          "args": [
+            "desktop",
+            "--backend=cef",
+            "--backend-args=--user-agent=\"potato\"",
+            "--output",
+            "./hello",
+            "./main.ts"
+          ],
+          "output": "desktop_mac.out"
+        }
+      ]
+    },
+    "packages_macos_app_bundle_config": {
+      "steps": [
+        {
+          "if": "mac",
+          "args": [
+            "desktop",
+            "--output",
+            "./hello2",
+            "--config",
+            "./desktop_config.jsonc",
+            "./main.ts"
+          ],
+          "output": "desktop_mac.out"
         }
       ]
     }
