@@ -23,7 +23,14 @@
         },
         {
           // laufey v0.6.1 ships no cef build for aarch64-pc-windows-msvc,
-          // so Windows exercises the webview backend instead.
+          // so Windows exercises the webview backend instead. Unlike the
+          // cef backend (which feeds the process argv into CefMainArgs so
+          // extra switches reach Chromium), the webview backend parses only
+          // `--runtime` and silently drops everything else — so the packaged
+          // app's webview would keep its default user agent and the app's
+          // `main.ts` would never see a user-agent header and exit. Only
+          // assert packaging (which is where backend args are parsed and
+          // baked into the launcher), never launch the packaged app here.
           "if": "windows",
           "args": [
             "desktop",
@@ -34,12 +41,6 @@
             "./main.ts"
           ],
           "output": "[WILDCARD]"
-        },
-        {
-          "if": "windows",
-          "commandName": "./hello/hello.exe",
-          "args": [],
-          "output": "desktop_windows.out"
         }
       ]
     },
@@ -81,6 +82,8 @@
           "output": "desktop_spaces.out"
         },
         {
+          // Windows (webview): packaging only, see
+          // forwards_backend_flags_to_launcher.
           "if": "windows",
           "args": [
             "desktop",
@@ -91,12 +94,6 @@
             "./main.ts"
           ],
           "output": "[WILDCARD]"
-        },
-        {
-          "if": "windows",
-          "commandName": "./hello_spaces/hello_spaces.exe",
-          "args": [],
-          "output": "desktop_spaces_windows.out"
         }
       ]
     },
@@ -121,6 +118,8 @@
           "output": "desktop_escaped.out"
         },
         {
+          // Windows (webview): packaging only, see
+          // forwards_backend_flags_to_launcher.
           "if": "windows",
           "args": [
             "desktop",
@@ -131,12 +130,6 @@
             "./main.ts"
           ],
           "output": "[WILDCARD]"
-        },
-        {
-          "if": "windows",
-          "commandName": "./hello_escaped/hello_escaped.exe",
-          "args": [],
-          "output": "desktop_escaped_windows.out"
         }
       ]
     },
@@ -207,6 +200,8 @@
           "output": "desktop_config.out"
         },
         {
+          // Windows (webview): packaging only, see
+          // forwards_backend_flags_to_launcher.
           "if": "windows",
           "args": [
             "desktop",
@@ -217,12 +212,6 @@
             "./main.ts"
           ],
           "output": "[WILDCARD]"
-        },
-        {
-          "if": "windows",
-          "commandName": "./hello2/hello2.exe",
-          "args": [],
-          "output": "desktop_config_windows.out"
         }
       ]
     },
