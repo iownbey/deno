@@ -1388,6 +1388,12 @@ const buildJobs = buildItems.map((rawBuildItem) => {
       }),
     });
     const testCrateNameExpr = testMatrix.test_crate;
+    // Desktop spec tests (part of the "specs" crate) launch a real GUI
+    // backend, which needs a display. Linux CI runners have no display, so
+    // run the test binary under a virtual X display via xvfb-run.
+    const cargoTestCmdPrefix = rawBuildItem.os === "linux"
+      ? "xvfb-run -a "
+      : "";
     const {
       restoreCacheStep,
       saveCacheStep,
@@ -1534,8 +1540,9 @@ const buildJobs = buildItems.map((rawBuildItem) => {
           {
             name: "Test (debug)",
             if: isDebug,
-            run:
-              `cargo test -p ${testMatrix.test_package} --test ${testMatrix.test_crate}`,
+            // Desktop spec tests launch a GUI backend, so run under a virtual
+            // X display on Linux where no real display is available.
+            run: `${cargoTestCmdPrefix}cargo test -p ${testMatrix.test_package} --test ${testMatrix.test_crate}`,
             env: {
               CARGO_PROFILE_DEV_DEBUG: 0,
               CI_SHARD_INDEX: isPr.then(testMatrix.shard_index).else(""),
@@ -1547,8 +1554,7 @@ const buildJobs = buildItems.map((rawBuildItem) => {
             if: isRelease.and(
               isDenoland.or(buildItem.use_sysroot),
             ),
-            run:
-              `cargo test -p ${testMatrix.test_package} --test ${testMatrix.test_crate} --release`,
+            run: `${cargoTestCmdPrefix}cargo test -p ${testMatrix.test_package} --test ${testMatrix.test_crate} --release`,
             env: {
               CI_SHARD_INDEX: isPr.then(testMatrix.shard_index).else(""),
               CI_SHARD_TOTAL: isPr.then(testMatrix.shard_total).else(""),
