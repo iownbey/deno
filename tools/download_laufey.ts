@@ -51,7 +51,14 @@ function resolveDenoBin(): string {
   );
 }
 
-const backend = Deno.args[0] ?? "cef";
+// laufey v0.6.1 does not ship a `cef` build for aarch64-pc-windows-msvc
+// (cli/laufey_sums.lock intentionally has no pin for it), so Windows CI
+// legs warm the cache with the `webview` backend instead.
+function defaultBackend(): string {
+  return Deno.build.os === "windows" ? "webview" : "cef";
+}
+
+const backend = Deno.args[0] ?? defaultBackend();
 const cacheDir = absolute(Deno.args[1] ?? "./target/.native_laufey");
 
 const denoBin = resolveDenoBin();
