@@ -23,10 +23,13 @@ function assertThrows(fn: () => unknown, expectedText: string) {
   try {
     fn();
   } catch (error) {
-    if (error instanceof Error && error.message.includes(expectedText)) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (message.includes(expectedText)) {
       return;
     }
-    throw error;
+    throw new Error(
+      `expected error containing '${expectedText}', got '${message}'`,
+    );
   }
   throw new Error(`expected error containing '${expectedText}'`);
 }
